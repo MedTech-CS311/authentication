@@ -1,0 +1,23 @@
+{
+  "name": "let_me_in",
+  "version": "1.0.0",
+  "description": "In this exercise, you have a server-side application developed with `NodeJS` and `Express`. Your mission is to protect this API so only authenticated users will have access to it.\r You will have to use `Postman` to test your endpoints.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MedTech-CS311/authentication.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MedTech-CS311/authentication/issues"
+  },
+  "homepage": "https://github.com/MedTech-CS311/authentication#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

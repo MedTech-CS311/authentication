@@ -3,6 +3,11 @@ const express = require("express");
 const app = express();
 const connection = require("./db");
 
+const bodyParser = require("body-parser");
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
+
 // Middlewares
 const authorize = require("./middlewares/authorize.middleware");
 

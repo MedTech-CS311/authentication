@@ -50,7 +50,7 @@ const login = (req, res) => {
       .compare(userData.password, dbUser.password)
       .then(() => {
         const token = jwt.sign(userData.email, "secret");
-        res.status(200).send({ user: outputUserData, token });
+        res.status(200).send({ user: dbUser, token });
       })
       .catch((error) => {
         console.log(error);

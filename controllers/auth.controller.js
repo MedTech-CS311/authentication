@@ -1,33 +1,59 @@
 // Import your packages here
-var express = require('express');
-var router = express.Router();
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const User = require("../models/user.model");
 
 // Import the list of users from db
 
+const signup = async (req, res) => {
+  // Get the new user data from request body
+  const userData = req.body;
 
-const signup = (req, res) => {
-    
-    // Get the new user data from request body
+  // If the email is already in use, you should throw a 409 error
+  const user = await User.findOne({ email: userData.email });
 
-    // If the email is already in use, you should throw a 409 error 
+  if (user) {
+    res.status(422).send({ message: "Email already taken" });
+  }
 
-    // Hash the password with bcrypt
+  // Hash the password with bcrypt
+  userData.password = await bcrypt.hash(userData.password, 10);
 
-    // Save the user to the users list
+  // Save the user to the users list
+  await User.create(userData);
 
-}
+  res.status(201).send();
+};
 
-const login = (req, res) => {
+const login = async (req, res) => {
+  // Get the user data from request body
+  const userData = req.body;
+  // Throw a 404 if the user does not exist in the list of the users
+  const dbUser = await User.findOne({ email: userData.email });
 
-    // Get the user data from request body
+  if (!dbUser) {
+    res.status(404).send({ message: "No user found with that email" });
+    return;
+  }
 
-    // Throw a 404 if the user does not exist in the list of the users
+  // Compare the password with bcrypt
+  const isPasswordCorrect = await bcrypt.compare(
+    userData.password,
+    dbUser.password
+  );
 
-    // Compare the password with bcrypt
-    // Throw a 403 error if password is incorrect
+  // Throw a 403 error if password is incorrect
+  if (!isPasswordCorrect) {
+    res.status(403).send({ message: "Wrong password" });
+  }
 
-    // Return an accessToken with jwt
+  // Return an accessToken with jwt
+  const token = jwt.sign({ email: userData.email }, "secret");
 
-}
+  res.status(200).send({
+    user: dbUser,
+    token,
+  });
+};
 
-module.exports = { signup, login }
+module.exports = { signup, login };

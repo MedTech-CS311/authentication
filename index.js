@@ -3,6 +3,8 @@ const express = require("express");
 const app = express();
 const db = require("./db");
 
+app.use(express.json());
+
 // Middlewares
 const authorize = require("./middlewares/authorize.middleware");
 
@@ -19,7 +21,7 @@ app.use("/api/public", publicRoutes);
 
 // Private modules
 // Notice how we call authorize so the request goes through it to check authorization
-app.use("/api/private", authorize, privateRoutes);
+app.use("/api/private", privateRoutes);
 
 // Starting to listen to requests
 app.listen(3000, () => {

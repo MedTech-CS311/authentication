@@ -2,8 +2,10 @@
 const express = require("express");
 const app = express();
 const db = require("./db");
+const cors = require("cors");
 
 app.use(express.json());
+app.use(cors());
 
 // Middlewares
 const authorize = require("./middlewares/authorize.middleware");
